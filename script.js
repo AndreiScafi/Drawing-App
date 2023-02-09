@@ -1,8 +1,14 @@
 const canvas = document.getElementById('canvas');
+const increaseBtn = document.getElementById('increase');
+const decreaseBtn = document.getElementById('decrease');
+const sizeEl = document.getElementById('size')
+const colorBtn = document.getElementById('color');
+const clear = document.getElementById('clear');
+
 const ctx = canvas.getContext('2d');
 
 //Global variables:
-let size = 20;
+let size = 10;
 let isPressed = false;
 let color = 'black'
 let x;
@@ -14,8 +20,6 @@ canvas.addEventListener('mousedown', (e) => {
     //Mouse position:
     x = e.offsetX;
     y = e.offsetY;
-
-    //console.log(isPressed, x, y)
 })
 
 canvas.addEventListener('mouseup', (e) => {
@@ -23,8 +27,6 @@ canvas.addEventListener('mouseup', (e) => {
     //Mouse position:
     x = undefined;
     y = undefined;
-
-    //console.log(isPressed, x, y)
 })
 
 canvas.addEventListener('mousemove', (e) => {
@@ -32,16 +34,12 @@ canvas.addEventListener('mousemove', (e) => {
         const x2 = e.offsetX;
         const y2 = e.offsetY;
 
-        //console.log(x2, y2)
-
         drawCircle(x2, y2);
         drawLine(x, y, x2, y2);
 
         x = x2;
         y = y2;
     }
-
-
 })
 
 //Drawing functions:
@@ -61,3 +59,37 @@ function drawLine(x1, y1, x2, y2) {
     ctx.stroke();
 }
 
+//Buttons functions:
+
+//Change pincel size:
+function updateSizeOnScreen() {
+    sizeEl.innerText = size;
+}
+
+increaseBtn.addEventListener('click', () => {
+    size += 1;
+
+    //Size limit
+    if (size > 50) {
+        size = 50;
+    }
+
+    updateSizeOnScreen();
+})
+
+decreaseBtn.addEventListener('click', () => {
+    size -= 1;
+
+    //Size limit
+    if (size < 1) {
+        size = 1;
+    }
+
+    updateSizeOnScreen();
+})
+
+//Change pincel color:
+colorBtn.addEventListener('change', (e) => color = e.target.value);
+
+//Clear canvas:
+clear.addEventListener('click', () => ctx.clearRect(0, 0, canvas.width, canvas.height))
